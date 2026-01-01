@@ -1,28 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>roni code</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="loader.css">
+<meta charset="UTF-8">
+<title>roni code</title>
+
+<!-- THREE.JS -->
+<script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #12002b, #000);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ===== INTRO ===== */
+#intro {
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, #0b0033, #000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 999;
+}
+
+canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.intro-content {
+  z-index: 2;
+  text-align: center;
+}
+
+.intro-content h1 {
+  font-size: 4rem;
+  letter-spacing: 4px;
+  background: linear-gradient(90deg, #00f6ff, #ff00f7);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.loader {
+  width: 300px;
+  height: 8px;
+  background: #1a1a1a;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 30px auto 10px;
+}
+
+.loader span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00f6ff, #ff00f7);
+}
+
+#percent {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* ===== MAIN SITE ===== */
+#site {
+  display: none;
+}
+
+header {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+header h2 {
+  font-size: 3rem;
+  background: linear-gradient(90deg, #00f6ff, #ff00f7);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+header p {
+  margin-top: 15px;
+  opacity: 0.8;
+}
+
+.services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.card {
+  width: 280px;
+  padding: 35px;
+  background: linear-gradient(145deg, #0f0f2a, #1b003d);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: transform 0.4s;
+}
+
+.card:hover {
+  transform: translateY(-15px);
+}
+
+.card h3 {
+  color: #00f6ff;
+  margin-bottom: 10px;
+}
+
+.card p {
+  opacity: 0.85;
+  font-size: 14px;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 12px 26px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #00f6ff, #ff00f7);
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ===== WHATSAPP FLOAT ===== */
+.whatsapp {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  text-decoration: none;
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  z-index: 999;
+}
+</style>
 </head>
+
 <body>
 
-<section class="intro">
+<!-- INTRO -->
+<div id="intro">
   <canvas id="bg"></canvas>
-
   <div class="intro-content">
     <h1>roni code</h1>
-
-    <div class="loader">
-      <div class="progress"></div>
-    </div>
-    <span id="percent">0%</span>
+    <div class="loader"><span id="bar"></span></div>
+    <div id="percent">0%</div>
   </div>
-</section>
+</div>
 
-<script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
-<script src="script.js"></script>
-<script src="loader.js"></script>
+<!-- MAIN SITE -->
+<div id="site">
+  <header>
+    <h2>Digital Services</h2>
+    <p>Premium Web & 3D Experiences</p>
+  </header>
+
+  <section class="services">
+    <div class="card">
+      <h3>Web Development</h3>
+      <p>Modern, fast and responsive websites.</p>
+      <a class="btn" href="https://wa.me/212600000000?text=I%20want%20Web%20Development" target="_blank">Order Service</a>
+    </div>
+
+    <div class="card">
+      <h3>3D Websites</h3>
+      <p>Interactive Three.js 3D experiences.</p>
+      <a class="btn" href="https://wa.me/212600000000?text=I%20want%203D%20Website" target="_blank">Order Service</a>
+    </div>
+
+    <div class="card">
+      <h3>UI / UX Design</h3>
+      <p>Creative and user-friendly designs.</p>
+      <a class="btn" href="https://wa.me/212600000000?text=I%20want%20UI%20UX%20Design" target="_blank">Order Service</a>
+    </div>
+  </section>
+</div>
+
+<a href="https://wa.me/212600000000" class="whatsapp" target="_blank">💬</a>
+
+<script>
+/* ===== 3D BACKGROUND ===== */
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ canvas: bg, alpha: true });
+renderer.setSize(innerWidth, innerHeight);
+camera.position.z = 4;
+
+const geometry = new THREE.IcosahedronGeometry(1.4, 1);
+const material = new THREE.MeshStandardMaterial({
+  color: 0xff00f7,
+  wireframe: true
+});
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+const light = new THREE.PointLight(0x00f6ff, 1.5);
+light.position.set(5, 5, 5);
+scene.add(light);
+
+function animate() {
+  requestAnimationFrame(animate);
+  mesh.rotation.x += 0.004;
+  mesh.rotation.y += 0.006;
+  renderer.render(scene, camera);
+}
+animate();
+
+/* ===== LOADER ===== */
+let p = 0;
+const bar = document.getElementById("bar");
+const percent = document.getElementById("percent");
+
+const load = setInterval(() => {
+  p++;
+  bar.style.width = p + "%";
+  percent.textContent = p + "%";
+
+  if (p >= 100) {
+    clearInterval(load);
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("site").style.display = "block";
+  }
+}, 30);
+</script>
+
 </body>
 </html>
