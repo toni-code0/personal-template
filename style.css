@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f0f0f;
+  color: white;
+}
+
+.hero {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  top: 40%;
+}
+
+h1 {
+  font-size: 4rem;
+  margin: 0;
+}
+
+section {
+  padding: 60px;
+  text-align: center;
+}
