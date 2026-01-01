@@ -1,0 +1,24 @@
+header {
+  padding: 60px;
+  text-align: center;
+  background: #111;
+}
+
+.services {
+  display: flex;
+  gap: 20px;
+  padding: 60px;
+  justify-content: center;
+}
+
+.card {
+  background: #1a1a1a;
+  padding: 30px;
+  width: 250px;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
